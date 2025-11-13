@@ -1,0 +1,84 @@
+# Reviewer Matching System Configuration
+
+# Model Configuration
+model:
+  name: "allenai/specter2_base"
+  embedding_dim: 768
+  max_tokens: 512
+  device: "cpu"  # Change to "cuda" if GPU available
+
+# Database Configuration
+database:
+  path: "data/reviewers.db"
+  min_reviewers: 10000
+  fields:
+    - "cs.AI"
+    - "cs.LG"
+    - "cs.CL"
+    - "cs.CV"
+    - "cs.NE"
+    - "bio.MB"
+    - "bio.GN"
+    - "bio.NC"
+
+# Reviewer Selection Criteria
+selection:
+  min_h_index: 10
+  min_publications: 5
+  max_inactivity_years: 3
+  recent_papers_count: 20
+  recent_years: 5
+
+# Ranking Configuration
+ranking:
+  similarity_weight: 0.70
+  recency_weight: 0.15
+  velocity_weight: 0.10
+  diversity_weight: 0.05
+  min_similarity_threshold: 0.50
+  max_results: 20
+
+# Filtering Configuration
+filtering:
+  max_inactivity_years: 3
+  require_recent_publication: true
+  min_h_index: 5
+  min_publications: 3
+
+# Conflict Detection
+conflicts:
+  check_coauthorship: true
+  check_institution: true
+  recent_collaboration_years: 3
+  institution_history_years: 5
+
+# API Configuration
+api:
+  title: "Semantic Reviewer Matching System"
+  version: "1.0.0"
+  description: "REST API for matching manuscripts to potential peer reviewers"
+  host: "0.0.0.0"
+  port: 8000
+  rate_limit_requests: 100
+  rate_limit_window: 3600  # seconds
+
+# Cache Configuration
+cache:
+  ttl: 3600  # seconds
+  enable_embedding_cache: true
+  enable_search_cache: true
+  enable_reviewer_cache: true
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/app.log"
+
+# Data Collection (Semantic Scholar API)
+data_collection:
+  api_rate_limit: 5000  # requests per 5 minutes
+  batch_size: 100
+  retry_attempts: 3
+  retry_delay: 2  # seconds
+  timeout: 30  # seconds

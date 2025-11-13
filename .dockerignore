@@ -1,0 +1,56 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+dist
+build
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files (will be mounted as volumes)
+data/raw/
+data/processed/
+data/indices/
+*.db
+*.sqlite
+*.npy
+*.index
+
+# Logs
+logs/
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Documentation
+*.md
+docs/
+
+# Jupyter
+.ipynb_checkpoints
+notebooks/
+
+# Environment
+.env
+.env.local
+.env.prod
