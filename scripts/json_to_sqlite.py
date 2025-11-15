@@ -47,6 +47,10 @@ def main():
             affiliations = [Affiliation(**aff) for aff in r_data["affiliations"]]
             papers = [Paper(**p) for p in r_data["recent_papers"]]
 
+            # Convert ISO string back to datetime
+            from datetime import datetime
+            last_updated = datetime.fromisoformat(r_data["last_updated"]) if r_data.get("last_updated") else datetime.now()
+
             reviewer = Reviewer(
                 reviewer_id=r_data["reviewer_id"],
                 name=r_data["name"],
@@ -57,7 +61,7 @@ def main():
                 fields=r_data["fields"],
                 active=r_data["active"],
                 recent_papers=papers,
-                last_updated=r_data["last_updated"]
+                last_updated=last_updated
             )
 
             db.add_reviewer(reviewer)
