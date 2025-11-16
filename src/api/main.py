@@ -113,7 +113,6 @@ async def root():
     tags=["Search"],
     status_code=status.HTTP_200_OK
 )
-@limiter.limit("100/hour")
 async def search_reviewers(request: SearchRequest):
     """
     Search for matching reviewers based on manuscript abstract
