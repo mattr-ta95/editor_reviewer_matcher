@@ -8,6 +8,7 @@ import uuid
 
 from ..database.models import Reviewer, ManuscriptQuery, ReviewerRecommendation
 from ..database.operations import ReviewerDatabase
+from ..database.json_operations import JSONReviewerDatabase
 from ..data.embedding_generator import SPECTER2EmbeddingGenerator
 from ..search.vector_index import FAISSVectorIndex
 from ..search.ranker import ReviewerRanker
@@ -39,7 +40,19 @@ class ReviewerMatcher:
 
         # Initialize components
         logger.info("Loading database...")
-        self.db = ReviewerDatabase(db_path)
+        # Try JSON first, fall back to SQLite
+        try:
+            json_path = "data/processed/metadata/reviewers.json"
+            from pathlib import Path
+            if Path(json_path).exists():
+                logger.info("Using JSON database (no SQLite)")
+                self.db = JSONReviewerDatabase(json_path)
+            else:
+                logger.info("Using SQLite database")
+                self.db = ReviewerDatabase(db_path)
+        except Exception as e:
+            logger.warning(f"Could not load JSON database, trying SQLite: {e}")
+            self.db = ReviewerDatabase(db_path)
 
         logger.info("Loading embedding generator...")
         self.embedding_generator = SPECTER2EmbeddingGenerator(model_name=model_name)
